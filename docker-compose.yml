@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nexus-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./backend:/app
+      - nexus-evidence:/evidence
+    restart: unless-stopped
+    networks:
+      - nexus-net
+    privileged: true          # Required for raw disk access tools
+    cap_add:
+      - NET_ADMIN             # For network monitoring tools
+      - NET_RAW               # For packet capture
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nexus-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - nexus-net
+    restart: unless-stopped
+
+networks:
+  nexus-net:
+    driver: bridge
+
+volumes:
+  nexus-evidence:
+    driver: local
