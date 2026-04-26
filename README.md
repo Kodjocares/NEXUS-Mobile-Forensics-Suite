@@ -24,7 +24,7 @@
 ### Option 1 — Docker (Recommended)
 
 ```bash
-git clone https://github.com/yourusername/nexus-mobile-forensics
+git clone https://github.com/Kodjocares/nexus-mobile-forensics
 cd nexus-mobile-forensics
 cp .env.example .env
 # Add your ANTHROPIC_API_KEY to .env
